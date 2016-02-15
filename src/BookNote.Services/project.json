@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0-*",
+  "description": "BookNote.Services Class Library",
+  "authors": [ "andre" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "frameworks": {
+    "dnx451": { },
+    "dnxcore50": { }
+  },
+  "dependencies": {
+    "BookNote.Domain": "1.0.0-*",
+    "BookNote.Repository": "1.0.0-*"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0-*",
+  "description": "BookNote.Repository Class Library",
+  "authors": [ "andre" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "frameworks": {
+    "dnx451": { },
+    "dnxcore50": { }
+  },
+  "dependencies": {
+    "BookNote.Domain": "1.0.0-*",
+    "EntityFramework.Commands": "7.0.0-rc1-final",
+    "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
+    "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final",
+    "Microsoft.AspNet.Diagnostics.Entity": "7.0.0-rc1-final"
+  },
+
+  "commands": {
+    "ef": "EntityFramework.Commands"
+  }
+}
