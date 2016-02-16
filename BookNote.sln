@@ -18,6 +18,12 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookNote.Domain", "src\Book
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookNote.Repository", "src\BookNote.Repository\BookNote.Repository.xproj", "{6F7C0E3C-C4AD-4ECB-848F-C0F2CC550B3D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5BD1425B-4724-4E95-ACC9-C1FE6C4E27C2}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookNote.Repository.Test", "BookNote.Repository.Test\BookNote.Repository.Test.xproj", "{CD05D285-244C-4671-919B-6103BEC1B0B1}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookNote.Services.Test", "BookNote.Services.Test\BookNote.Services.Test.xproj", "{436D60AE-52D3-4EC1-B35D-A73E4EC9BABE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +46,14 @@ Global
 		{6F7C0E3C-C4AD-4ECB-848F-C0F2CC550B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F7C0E3C-C4AD-4ECB-848F-C0F2CC550B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F7C0E3C-C4AD-4ECB-848F-C0F2CC550B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD05D285-244C-4671-919B-6103BEC1B0B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD05D285-244C-4671-919B-6103BEC1B0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD05D285-244C-4671-919B-6103BEC1B0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD05D285-244C-4671-919B-6103BEC1B0B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{436D60AE-52D3-4EC1-B35D-A73E4EC9BABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{436D60AE-52D3-4EC1-B35D-A73E4EC9BABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{436D60AE-52D3-4EC1-B35D-A73E4EC9BABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{436D60AE-52D3-4EC1-B35D-A73E4EC9BABE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,5 +63,7 @@ Global
 		{AF5DE901-A243-4FA9-8AA2-A584E521912E} = {58E138BC-0F69-4EF5-BE73-927C5FFD0DE3}
 		{EAC9F1D5-B4B3-44AA-93AC-46985112F561} = {58E138BC-0F69-4EF5-BE73-927C5FFD0DE3}
 		{6F7C0E3C-C4AD-4ECB-848F-C0F2CC550B3D} = {58E138BC-0F69-4EF5-BE73-927C5FFD0DE3}
+		{CD05D285-244C-4671-919B-6103BEC1B0B1} = {5BD1425B-4724-4E95-ACC9-C1FE6C4E27C2}
+		{436D60AE-52D3-4EC1-B35D-A73E4EC9BABE} = {5BD1425B-4724-4E95-ACC9-C1FE6C4E27C2}
 	EndGlobalSection
 EndGlobal

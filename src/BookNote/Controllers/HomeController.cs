@@ -9,11 +9,8 @@ namespace BookNote.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly BookNoteContext _context;
-
-		public HomeController(BookNoteContext context)
+		public HomeController()
 		{
-			_context = context;
 		}
 
 		public IActionResult Index()

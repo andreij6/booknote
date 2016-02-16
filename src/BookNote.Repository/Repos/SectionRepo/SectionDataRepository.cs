@@ -3,44 +3,83 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookNote.Domain.Models;
+using BookNote.Repository.Models;
+using Microsoft.Data.Entity;
 
 namespace BookNote.Repository.Repos.SectionRepo
 {
 	public class SectionDataRepository : ISectionDataRepository
 	{
+		private BookNoteContext db;
+
+		public SectionDataRepository(BookNoteContext context)
+		{
+			db = context;
+		}
+
 		public void Add(Section entity)
 		{
-			throw new NotImplementedException();
+			db.Sections.Add(entity);
+			Commit();
 		}
 
 		public void Delete(int id)
 		{
-			throw new NotImplementedException();
+			var entity = GetById(id);
+			db.Sections.Remove(entity);
+			Commit();
 		}
 
 		public IEnumerable<Section> GetAll()
 		{
-			throw new NotImplementedException();
+			return db.Sections.ToList();
 		}
 
 		public Section GetById(int id)
 		{
-			throw new NotImplementedException();
+			return db.Sections.FirstOrDefault(s => s.Id == id);
 		}
 
 		public IEnumerable<Section> GetSectionsByBookId(int bookId)
 		{
-			throw new NotImplementedException();
+			var book = db.Books
+						.Include(b => b.Chapters)
+						.FirstOrDefault(b => b.Id == bookId);
+
+			var result = new List<Section>();
+
+			foreach(var chapter in book.Chapters) {
+				result.AddRange(chapter.Sections);
+			}
+
+			return result;
 		}
 
 		public IEnumerable<Section> GetSectionsByChapterId(int chapterId)
 		{
-			throw new NotImplementedException();
+			var chapter = db.Chapters.Include(c => c.Sections).FirstOrDefault(c => c.Id == chapterId);
+
+			if(chapter == null) {
+				return Enumerable.Empty<Section>();
+			}
+
+			return chapter.Sections;
 		}
 
 		public void Update(int id, Section entity)
 		{
-			throw new NotImplementedException();
+			var section = GetById(id);
+
+			section.Name = entity.Name;
+			section.Note = entity.Note;
+
+			db.Sections.Update(section);
+			Commit();
+		}
+
+		private void Commit()
+		{
+			db.SaveChanges();
 		}
 	}
 }
