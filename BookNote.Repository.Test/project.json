@@ -9,6 +9,9 @@
   "dependencies": {
     "BookNote.Domain": "1.0.0-*",
     "BookNote.Repository": "1.0.0-*",
+    "EntityFramework.InMemory": "7.0.0-rc1-final",
+    "FluentAssertions": "4.2.2",
+    "GenFu": "1.0.4",
     "xunit": "2.1.0",
     "xunit.runner.dnx": "2.1.0-rc1-build204"
   },

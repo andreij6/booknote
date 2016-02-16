@@ -69,9 +69,9 @@ namespace BookNote
 
 		private void RegisterRepositories(IServiceCollection services)
 		{
-			services.AddSingleton<IChapterDataRepository, ChapterDataRepo>();
-			services.AddSingleton<ISectionDataRepository, SectionDataRepository>();
-			services.AddSingleton<IBookDataRepository, BookDataRepository>();
+			services.AddScoped<IChapterDataRepository, ChapterDataRepo>();
+			services.AddScoped<ISectionDataRepository, SectionDataRepository>();
+			services.AddScoped<IBookDataRepository, BookDataRepository>();
 		}
 
 	

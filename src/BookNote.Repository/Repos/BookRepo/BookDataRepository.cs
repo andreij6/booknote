@@ -18,6 +18,10 @@ namespace BookNote.Repository.Repos.BookRepo
 
 		public void Add(Book entity)
 		{
+			if (!entity.isValid()) {
+				throw CreateException(entity);
+			}
+
 			db.Books.Add(entity);
 			Commit();
 		}
@@ -46,13 +50,22 @@ namespace BookNote.Repository.Repos.BookRepo
 			found.Name = entity.Name;
 			found.Note = entity.Note;
 
-			db.Books.Update(entity);
+			if (found.isValid()) {
+				throw CreateException(found);
+			}
+
+			db.Books.Update(found);
 			Commit();
 		}
 
 		private void Commit()
 		{
 			db.SaveChanges();
+		}
+
+		private Exception CreateException(Book entity)
+		{
+			return new Exception(entity.ValidationMessage());
 		}
 	}
 }
