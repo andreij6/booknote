@@ -8,9 +8,10 @@ using BookNote.Repository.Models;
 namespace BookNote.Repository.Migrations
 {
     [DbContext(typeof(BookNoteContext))]
-    partial class BookNoteContextModelSnapshot : ModelSnapshot
+    [Migration("20160216062448_AddCategoriesTable")]
+    partial class AddCategoriesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")

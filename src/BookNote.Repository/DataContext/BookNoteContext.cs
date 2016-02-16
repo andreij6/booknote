@@ -21,6 +21,7 @@ namespace BookNote.Repository.Models
 		public DbSet<Book> Books { get; set; }
 		public DbSet<Chapter> Chapters { get; set; }
 		public DbSet<Section> Sections { get; set; }
+		public DbSet<Category> Categories { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

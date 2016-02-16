@@ -17,6 +17,7 @@ using BookNote.Domain.Models;
 using BookNote.Repository.Repos.ChapterRepo;
 using BookNote.Repository.Repos.SectionRepo;
 using BookNote.Repository.Repos.BookRepo;
+using BookNote.Repository.Repos.CategoryRepo;
 
 namespace BookNote
 {
@@ -72,6 +73,7 @@ namespace BookNote
 			services.AddScoped<IChapterDataRepository, ChapterDataRepo>();
 			services.AddScoped<ISectionDataRepository, SectionDataRepository>();
 			services.AddScoped<IBookDataRepository, BookDataRepository>();
+			services.AddScoped<ICategoryDataRepository, CategoryDataRepository>();
 		}
 
 	
