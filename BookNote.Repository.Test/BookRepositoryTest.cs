@@ -14,31 +14,14 @@ namespace BookNote.Repository.Test
 {
 	// This project can output the Class library as a NuGet Package.
 	// To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
-	public class BookRepositoryTest : IDisposable
+	public class BookRepositoryTest : DataRepositoryTest<IBookDataRepository>
 	{
-		private readonly IServiceProvider serviceProvider;
-		private IBookDataRepository SUT;
-
-		public BookRepositoryTest()
-		{
-			var services = new ServiceCollection();
-
-			services.AddEntityFramework()
-				.AddInMemoryDatabase()
-				.AddDbContext<BookNoteContext>(options => options.UseInMemoryDatabase());
-
-			serviceProvider = services.BuildServiceProvider();
-		}
 
 		[Fact]
 		public void GetByIdShouldFindItemById()
 		{
 			//Arrange
-			var dbContext = serviceProvider.GetRequiredService<BookNoteContext>();
-
-			CreateTestData(dbContext);
-
-			SUT = new BookDataRepository(dbContext);
+			ArrangeSUT();
 
 			//Act
 			var target = SUT.GetById(9);
@@ -52,11 +35,7 @@ namespace BookNote.Repository.Test
 		public void GetByIdShouldReturnNullWhenBookNotFound()
 		{
 			//Arrange
-			var dbContext = serviceProvider.GetRequiredService<BookNoteContext>();
-
-			CreateTestData(dbContext);
-
-			SUT = new BookDataRepository(dbContext);
+			ArrangeSUT();
 
 			//ACT
 			var target = SUT.GetById(99);
@@ -69,11 +48,7 @@ namespace BookNote.Repository.Test
 		public void UpdateBookShouldChangeName()
 		{
 			//Arrange
-			var dbContext = serviceProvider.GetRequiredService<BookNoteContext>();
-
-			CreateTestData(dbContext);
-
-			SUT = new BookDataRepository(dbContext);
+			ArrangeSUT();
 
 			var target_id = 9;
 			var title = "Charlottes Web";
@@ -95,11 +70,7 @@ namespace BookNote.Repository.Test
 		[Fact]
 		public void AddBookShouldSucceedWithValidBook()
 		{
-			var dbContext = serviceProvider.GetRequiredService<BookNoteContext>();
-
-			CreateTestData(dbContext);
-
-			SUT = new BookDataRepository(dbContext);
+			ArrangeSUT();
 
 			var title = "Charlottes Web";
 			var notes = "good book";
@@ -119,11 +90,7 @@ namespace BookNote.Repository.Test
 		[Fact]
 		public void AddBookWithoutNameShouldThrowException()
 		{
-			var dbContext = serviceProvider.GetRequiredService<BookNoteContext>();
-
-			CreateTestData(dbContext);
-
-			SUT = new BookDataRepository(dbContext);
+			ArrangeSUT();
 
 			var title = String.Empty;
 			var notes = "good book";
@@ -140,11 +107,7 @@ namespace BookNote.Repository.Test
 		public void DeleteShouldRemoveBook()
 		{
 			//Arrange
-			var dbContext = serviceProvider.GetRequiredService<BookNoteContext>();
-
-			CreateTestData(dbContext);
-
-			SUT = new BookDataRepository(dbContext);
+			ArrangeSUT();
 
 			//Act
 			SUT.Delete(9);
@@ -159,9 +122,7 @@ namespace BookNote.Repository.Test
 		public void DeleteShouldDoNothingIfNoBookFoundForGivenId()
 		{
 			//Arrange
-			var dbContext = serviceProvider.GetRequiredService<BookNoteContext>();
-
-			CreateTestData(dbContext);
+			var dbContext = arrangeDB();
 
 			SUT = new BookDataRepository(dbContext);
 
@@ -174,7 +135,7 @@ namespace BookNote.Repository.Test
 			target.Should().BeNull();
 		}
 
-		private void CreateTestData(BookNoteContext dbContext)
+		protected override void CreateTestData(BookNoteContext dbContext)
 		{
 			var i = 0;
 			var id = 1;
@@ -189,9 +150,16 @@ namespace BookNote.Repository.Test
 			dbContext.SaveChanges();
 		}
 
-		public void Dispose()
+		public override void Dispose()
 		{
 			SUT = null;
+		}
+
+		protected override void ArrangeSUT()
+		{
+			var dbContext = arrangeDB();
+
+			SUT = new BookDataRepository(dbContext);
 		}
 	}
 }
