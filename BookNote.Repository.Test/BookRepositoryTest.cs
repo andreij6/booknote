@@ -16,7 +16,6 @@ namespace BookNote.Repository.Test
 	// To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
 	public class BookRepositoryTest : DataRepositoryTest<IBookDataRepository>
 	{
-
 		[Fact]
 		public void GetByIdShouldFindItemById()
 		{
@@ -65,6 +64,24 @@ namespace BookNote.Repository.Test
 			target.Should().BeOfType<Book>().Which.Note.Should().Be(notes);
 			target.Should().BeOfType<Book>().Which.Id.Should().Be(target_id);
 
+		}
+
+		[Fact]
+		public void Update_WithInvalidBookNameShouldFail()
+		{
+			//Arrange
+			ArrangeSUT();
+
+			var target_id = 9;
+			var title = "";
+			var notes = "good book";
+
+			var book = new Book(title) { Note = notes };
+			//ACT
+		
+			Action action = () => SUT.Update(target_id, book);
+
+			action.ShouldThrow<Exception>().WithMessage(book.ValidationMessage());
 		}
 
 		[Fact]
@@ -137,7 +154,6 @@ namespace BookNote.Repository.Test
 
 		protected override void CreateTestData(BookNoteContext dbContext)
 		{
-			var i = 0;
 			var id = 1;
 
 			GenFu.GenFu.Configure<Book>()

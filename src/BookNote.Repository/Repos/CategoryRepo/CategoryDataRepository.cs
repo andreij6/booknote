@@ -17,32 +17,47 @@ namespace BookNote.Repository.Repos.CategoryRepo
 
 		public void Add(Category entity)
 		{
-			throw new NotImplementedException();
+			db.Categories.Add(entity);
+			Commit();
 		}
 
 		public void Delete(int id)
 		{
-			throw new NotImplementedException();
+			var entity = GetById(id);
+
+			db.Categories.Remove(entity);
+
+			Commit();
 		}
 
 		public IEnumerable<Category> GetAll()
 		{
-			throw new NotImplementedException();
+			return db.Categories.ToList();
 		}
 
 		public IEnumerable<Category> GetByBookId(int bookId)
 		{
-			throw new NotImplementedException();
+			return db.Books.FirstOrDefault(b => b.Id == bookId).Categories;
 		}
 
 		public Category GetById(int id)
 		{
-			throw new NotImplementedException();
+			return db.Categories.FirstOrDefault(c => c.Id == id);
 		}
 
 		public void Update(int id, Category entity)
 		{
-			throw new NotImplementedException();
+			var found = GetById(id);
+
+			found.Name = entity.Name;
+
+			db.Categories.Update(found);
+			Commit();
+		}
+
+		private void Commit()
+		{
+			db.SaveChanges();
 		}
 	}
 }

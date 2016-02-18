@@ -45,14 +45,14 @@ namespace BookNote.Repository.Repos.BookRepo
 
 		public void Update(int id, Book entity)
 		{
+			if (!entity.isValid()) {
+				throw CreateException(entity);
+			}
+
 			var found = GetById(id);
 
 			found.Name = entity.Name;
 			found.Note = entity.Note;
-
-			if (found.isValid()) {
-				throw CreateException(found);
-			}
 
 			db.Books.Update(found);
 			Commit();

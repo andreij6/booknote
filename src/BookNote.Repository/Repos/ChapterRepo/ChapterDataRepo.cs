@@ -44,7 +44,9 @@ namespace BookNote.Repository.Repos.ChapterRepo
 
 		public IEnumerable<Chapter> GetChaptersByBookId(int bookid)
 		{
-			return db.Books.Include(b => b.Chapters).FirstOrDefault(b => b.Id == bookid).Chapters;
+			return db.Books.Include(b => b.Chapters)
+				      .FirstOrDefault(b => b.Id == bookid)
+					 .Chapters;
 		}
 
 		public void Update(int id, Chapter entity)
