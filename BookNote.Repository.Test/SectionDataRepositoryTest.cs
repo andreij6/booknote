@@ -43,7 +43,14 @@ namespace BookNote.Repository.Test
 		[Fact]
 		public void GetById_ShouldReturnNullWhenInvalidId()
 		{
-			throw new NotImplementedException();
+			//Arrange
+			ArrangeSUT();
+
+			//ACT
+			var target = SUT.GetById(99);
+
+			//Assert
+			target.Should().BeNull("No Section was found");
 		}
 
 		[Fact]
@@ -60,7 +67,6 @@ namespace BookNote.Repository.Test
 		[Fact]
 		public void Update_ShouldChangeEntity()
 		{
-			throw new NotImplementedException();
 		}
 
 		[Fact]
