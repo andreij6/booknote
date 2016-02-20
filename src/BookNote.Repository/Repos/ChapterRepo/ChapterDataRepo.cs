@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookNote.Domain;
 using BookNote.Domain.Models;
 using BookNote.Repository.Models;
 using Microsoft.Data.Entity;
 
 namespace BookNote.Repository.Repos.ChapterRepo
 {
-	public class ChapterDataRepo : IChapterDataRepository
+	public class ChapterDataRepo : DataRepository, IChapterDataRepository
 	{
 		BookNoteContext db;
 
@@ -19,6 +20,8 @@ namespace BookNote.Repository.Repos.ChapterRepo
 
 		public void Add(Chapter entity)
 		{
+			CheckValidity(entity);
+
 			db.Chapters.Add(entity);
 			Commit();
 		}
@@ -51,6 +54,8 @@ namespace BookNote.Repository.Repos.ChapterRepo
 
 		public void Update(int id, Chapter entity)
 		{
+			CheckValidity(entity);
+
 			var found = GetById(id);
 
 			found.Name = entity.Name;
@@ -59,7 +64,7 @@ namespace BookNote.Repository.Repos.ChapterRepo
 			db.Chapters.Update(found);
 			Commit();
 		}
-
+	
 		private void Commit()
 		{
 			db.SaveChanges();

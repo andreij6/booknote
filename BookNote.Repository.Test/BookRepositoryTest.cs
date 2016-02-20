@@ -165,9 +165,7 @@ namespace BookNote.Repository.Test
 		public void Delete_ShouldDoNothingIfEntityNotFound()
 		{
 			//Arrange
-			var dbContext = arrangeDB();
-
-			SUT = new BookDataRepository(dbContext);
+			ArrangeSUT();
 
 			//Act
 			SUT.Delete(9);

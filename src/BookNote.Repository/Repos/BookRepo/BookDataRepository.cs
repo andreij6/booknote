@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookNote.Domain;
 using BookNote.Domain.Models;
 using BookNote.Repository.Models;
 
 namespace BookNote.Repository.Repos.BookRepo
 {
-	public class BookDataRepository : IBookDataRepository
+	public class BookDataRepository : DataRepository, IBookDataRepository
 	{
 		private BookNoteContext db;
 
@@ -18,9 +19,7 @@ namespace BookNote.Repository.Repos.BookRepo
 
 		public void Add(Book entity)
 		{
-			if (!entity.isValid()) {
-				throw CreateException(entity);
-			}
+			CheckValidity(entity);
 
 			db.Books.Add(entity);
 			Commit();
@@ -45,9 +44,7 @@ namespace BookNote.Repository.Repos.BookRepo
 
 		public void Update(int id, Book entity)
 		{
-			if (!entity.isValid()) {
-				throw CreateException(entity);
-			}
+			CheckValidity(entity);
 
 			var found = GetById(id);
 
@@ -63,9 +60,5 @@ namespace BookNote.Repository.Repos.BookRepo
 			db.SaveChanges();
 		}
 
-		private Exception CreateException(Book entity)
-		{
-			return new Exception(entity.ValidationMessage());
-		}
 	}
 }

@@ -44,7 +44,14 @@ namespace BookNote.Repository.Test
 		[Fact]
 		public void GetById_ShouldReturnNullWhenInvalidId()
 		{
-			throw new NotImplementedException();
+			//Arrange
+			ArrangeSUT();
+
+			//ACT
+			var target = SUT.GetById(99);
+
+			//Assert
+			target.Should().BeNull("No Chapter was found");
 		}
 
 		[Fact]
@@ -64,37 +71,107 @@ namespace BookNote.Repository.Test
 		[Fact]
 		public void Update_ShouldChangeEntity()
 		{
-			throw new NotImplementedException();
+			//Arrange
+			ArrangeSUT();
+
+			var target_id = 9;
+			var title = "Charlottes Web";
+			var notes = "good book";
+
+			var chapter = new Chapter() { Name = title, Note = notes };
+			//ACT
+			SUT.Update(target_id, chapter);
+
+			var target = SUT.GetById(target_id);
+
+			//Assert
+			target.Should().BeOfType<Chapter>().Which.Name.Should().Be(title);
+			target.Should().BeOfType<Chapter>().Which.Note.Should().Be(notes);
+			target.Should().BeOfType<Chapter>().Which.Id.Should().Be(target_id);
 		}
 
 		[Fact]
 		public void Update_InvalidEntityShouldThrowException()
 		{
-			throw new NotImplementedException();
+			//Arrange
+			ArrangeSUT();
+
+			var target_id = 9;
+			var title = "";
+			var notes = "good book";
+
+			var chapter = new Chapter() { Name = title, Note = notes };
+			//ACT
+
+			Action action = () => SUT.Update(target_id, chapter);
+
+			action.ShouldThrow<Exception>().WithMessage(chapter.ValidationMessage());
 		}
 
 		[Fact]
 		public void Add_EntityShouldSucceedWithValidParameter()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			var title = "Charlottes Web";
+			var notes = "good book";
+			var target_id = 30;
+
+			var chapter = new Chapter() {Name = title, Note = notes, Id = target_id };
+
+			SUT.Add(chapter);
+
+			var target = SUT.GetById(target_id);
+
+			target.Should().BeOfType<Chapter>().Which.Name.Should().Be(title);
+			target.Should().BeOfType<Chapter>().Which.Note.Should().Be(notes);
+			target.Should().BeOfType<Chapter>().Which.Id.Should().Be(target_id);
 		}
 
 		[Fact]
 		public void Add_InvalidParameterShouldthrowException()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			var title = String.Empty;
+			var notes = "good book";
+			var target_id = 30;
+
+			var chapter = new Chapter() {Name = title, Note = notes, Id = target_id };
+
+			Action action = () => SUT.Add(chapter);
+
+			action.ShouldThrow<Exception>().WithMessage(chapter.ValidationMessage());
 		}
 
 		[Fact]
 		public void Delete_ShouldRemoveEntity()
 		{
-			throw new NotImplementedException();
+			//Arrange
+			ArrangeSUT();
+
+			//Act
+			SUT.Delete(9);
+
+			var target = SUT.GetById(9);
+
+			//Assert
+			target.Should().BeNull();
 		}
 
 		[Fact]
 		public void Delete_ShouldDoNothingIfEntityNotFound()
 		{
-			throw new NotImplementedException();
+			//Arrange
+			ArrangeSUT();
+
+			//Act
+			SUT.Delete(9);
+
+			var target = SUT.GetById(99);
+
+			//Assert
+			target.Should().BeNull();
 		}
 	}
 }
