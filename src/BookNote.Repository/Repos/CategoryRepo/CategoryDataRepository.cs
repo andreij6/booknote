@@ -7,7 +7,7 @@ using BookNote.Repository.Models;
 
 namespace BookNote.Repository.Repos.CategoryRepo
 {
-	public class CategoryDataRepository : ICategoryDataRepository
+	public class CategoryDataRepository : DataRepository, ICategoryDataRepository
 	{
 		public readonly BookNoteContext db;
 		public CategoryDataRepository(BookNoteContext context)
@@ -17,6 +17,8 @@ namespace BookNote.Repository.Repos.CategoryRepo
 
 		public void Add(Category entity)
 		{
+			CheckValidity(entity);
+
 			db.Categories.Add(entity);
 			Commit();
 		}
@@ -47,6 +49,8 @@ namespace BookNote.Repository.Repos.CategoryRepo
 
 		public void Update(int id, Category entity)
 		{
+			CheckValidity(entity);
+
 			var found = GetById(id);
 
 			found.Name = entity.Name;

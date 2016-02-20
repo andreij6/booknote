@@ -8,7 +8,7 @@ using Microsoft.Data.Entity;
 
 namespace BookNote.Repository.Repos.SectionRepo
 {
-	public class SectionDataRepository : ISectionDataRepository
+	public class SectionDataRepository : DataRepository, ISectionDataRepository
 	{
 		private BookNoteContext db;
 
@@ -19,6 +19,7 @@ namespace BookNote.Repository.Repos.SectionRepo
 
 		public void Add(Section entity)
 		{
+			CheckValidity(entity);
 			db.Sections.Add(entity);
 			Commit();
 		}
@@ -68,6 +69,8 @@ namespace BookNote.Repository.Repos.SectionRepo
 
 		public void Update(int id, Section entity)
 		{
+			CheckValidity(entity);
+
 			var section = GetById(id);
 
 			section.Name = entity.Name;

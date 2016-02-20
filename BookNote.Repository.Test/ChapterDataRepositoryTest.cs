@@ -13,8 +13,7 @@ namespace BookNote.Repository.Test
 {
 	public class ChapterDataRepositoryTest : DataRepositoryTest<IChapterDataRepository>, IFullDataRepositoryCapable
 	{
-
-
+		#region Helpers
 		public override void Dispose()
 		{
 			SUT = null;
@@ -40,7 +39,23 @@ namespace BookNote.Repository.Test
 
 			SUT = new ChapterDataRepo(dbContext);
 		}
+		#endregion
 
+		#region Chapter Specific
+		[Fact]
+		public void GetChapters_ByBookId_ShouldSucceedWithValidBookId()
+		{
+			throw new NotImplementedException();
+		}
+
+		[Fact]
+		public void GetChapters_ByBookId_ShouldBeNullForInvalidBookId()
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
+
+		#region IFullDataRepoCapable
 		[Fact]
 		public void GetById_ShouldReturnNullWhenInvalidId()
 		{
@@ -173,5 +188,6 @@ namespace BookNote.Repository.Test
 			//Assert
 			target.Should().BeNull();
 		}
+		#endregion
 	}
 }

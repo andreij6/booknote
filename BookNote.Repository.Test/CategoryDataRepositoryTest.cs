@@ -12,11 +12,32 @@ namespace BookNote.Repository.Test
 {
 	public class CategoryDataRepositoryTest : DataRepositoryTest<ICategoryDataRepository>, IFullDataRepositoryCapable
 	{
-		#region TESTS
+		#region Category Specific
+		[Fact]
+		public void GetCategories_ByBookId_ShouldReturnAllCategoriesForBook()
+		{
+			throw new NotImplementedException();
+		}
+
+		[Fact]
+		public void GetCategories_ByBookId_ShouldReturnNullIfBookIdNotFound()
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
+
+		#region FullDataRepoCapable
 		[Fact]
 		public void GetById_ShouldReturnNullWhenInvalidId()
 		{
-			throw new NotImplementedException();
+			//Arrange
+			ArrangeSUT();
+
+			//ACT
+			var target = SUT.GetById(99);
+
+			//Assert
+			target.Should().BeNull("No Category was found");
 		}
 
 		[Fact]
@@ -36,40 +57,106 @@ namespace BookNote.Repository.Test
 		[Fact]
 		public void Update_ShouldChangeEntity()
 		{
-			throw new NotImplementedException();
+			//Arrange
+			ArrangeSUT();
+
+			var target_id = 9;
+			var title = "Charlottes Web";
+
+			var category = new Category() { Name = title };
+			//ACT
+			SUT.Update(target_id, category);
+
+			var target = SUT.GetById(target_id);
+
+			//Assert
+			target.Should().BeOfType<Category>().Which.Name.Should().Be(title);
+			target.Should().BeOfType<Category>().Which.Id.Should().Be(target_id);
 		}
 
 		[Fact]
 		public void Update_InvalidEntityShouldThrowException()
 		{
-			throw new NotImplementedException();
+			//Arrange
+			ArrangeSUT();
+
+			var target_id = 9;
+			var title = "";
+
+			var category = new Category() { Name = title };
+			//ACT
+
+			Action action = () => SUT.Update(target_id, category);
+
+			action.ShouldThrow<Exception>().WithMessage(category.ValidationMessage());
 		}
 
 		[Fact]
 		public void Add_EntityShouldSucceedWithValidParameter()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			var title = "Charlottes Web";
+			var target_id = 30;
+
+			var chapter = new Category() { Name = title, Id = target_id };
+
+			SUT.Add(chapter);
+
+			var target = SUT.GetById(target_id);
+
+			target.Should().BeOfType<Category>().Which.Name.Should().Be(title);
+			target.Should().BeOfType<Category>().Which.Id.Should().Be(target_id);
+
 		}
 
 		[Fact]
 		public void Add_InvalidParameterShouldthrowException()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			var title = String.Empty;
+			var target_id = 30;
+
+			var category  = new Category() { Name = title, Id = target_id };
+
+			Action action = () => SUT.Add(category);
+
+			action.ShouldThrow<Exception>().WithMessage(category.ValidationMessage());
+
 		}
 
 		[Fact]
 		public void Delete_ShouldRemoveEntity()
 		{
-			throw new NotImplementedException();
+			//Arrange
+			ArrangeSUT();
+
+			//Act
+			SUT.Delete(9);
+
+			var target = SUT.GetById(9);
+
+			//Assert
+			target.Should().BeNull();
 		}
 
 		[Fact]
 		public void Delete_ShouldDoNothingIfEntityNotFound()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			//Act
+			SUT.Delete(9);
+
+			var target = SUT.GetById(99);
+
+			//Assert
+			target.Should().BeNull();
 		}
 		#endregion
 
+		#region Helpers
 		public override void Dispose()
 		{
 			SUT = null;
@@ -95,7 +182,8 @@ namespace BookNote.Repository.Test
 			dbContext.Categories.AddRange(cats);
 			dbContext.SaveChanges();
 		}
+		#endregion
 
-		
+
 	}
 }
