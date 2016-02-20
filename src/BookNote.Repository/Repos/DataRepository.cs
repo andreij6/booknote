@@ -19,5 +19,10 @@ namespace BookNote.Repository.Repos
 		{
 			return new Exception(entity.ValidationMessage());
 		}
+
+		protected Exception CreateException(string message)
+		{
+			return new Exception(message);
+		}
 	}
 }

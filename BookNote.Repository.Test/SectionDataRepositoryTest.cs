@@ -15,24 +15,46 @@ namespace BookNote.Repository.Test
 		//Test until Fear turns to boredom, Clean Code
 
 		#region Section Specific
+		[Fact]
 		public void GetSections_ByBookId_ShouldSuccedWithValidId()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			var target = SUT.GetSectionsByBookId(1);
+
+			target.Should().BeOfType<IEnumerable<Section>>();
+			target.Should().HaveCount(x => x == 20);
 		}
 
-		public void GetSection_ByBookId_ShouldReturnNullForInvalidBookId()
+		[Fact]
+		public void GetSection_ByBookId_ShouldThrowExpectionInvalidBookId()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			Action action = () => SUT.GetSectionsByBookId(5);
+
+			action.ShouldThrow<Exception>().WithMessage(SectionDataRepository.BOOK_NOT_FOUND);
 		}
 
+		[Fact]
 		public void GetSection_ByChapterId_ShouldSucceedWithValidId()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			var target = SUT.GetSectionsByChapterId(1);
+
+			target.Should().BeOfType<List<Section>>();  //not sure why IEnumerable<Section> didnt work
+			target.Should().HaveCount(x => x == 10);
 		}
 
+		[Fact]
 		public void GetSection_ByChapterId_ShouldReturnNullForInvalidChapterId()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			Action action = () => SUT.GetSectionsByChapterId(99);
+
+			action.ShouldThrow<Exception>().WithMessage(SectionDataRepository.CHAPTER_NOT_FOUND);
 		}
 		#endregion
 
@@ -51,16 +73,60 @@ namespace BookNote.Repository.Test
 
 		protected override void CreateTestData(BookNoteContext dbContext)
 		{
+			var books = CreateBooks();
+			var chapters = CreateChapters();
+			var sections = CreateSections();
+
+			//Add Section to Chapters
+			var firstChapter = chapters.ElementAt(0);
+			var secondChapter = chapters.ElementAt(1);
+
+			firstChapter.Sections = sections.Take(10).ToArray();
+			secondChapter.Sections = sections.Skip(10).Take(10).ToArray();
+
+			//Add Chapters to book
+			var onlyBook = books.ElementAt(0);
+
+			onlyBook.Chapters = chapters.ToArray();
+
+			dbContext.Books.AddRange(books);
+			dbContext.Chapters.AddRange(chapters);
+			dbContext.Sections.AddRange(sections);
+
+			dbContext.SaveChanges();
+		}
+
+		private IEnumerable<Section> CreateSections()
+		{
 			var id = 1;
 
 			GenFu.GenFu.Configure<Section>()
 			    .Fill(p => p.Id, () => id++)
 			    .Fill(p => p.Name, () => $"section_{id}");
 
-			var sections = GenFu.GenFu.ListOf<Section>(20);
+			return GenFu.GenFu.ListOf<Section>(20);
+		}
 
-			dbContext.Sections.AddRange(sections);
-			dbContext.SaveChanges();
+		private IEnumerable<Chapter> CreateChapters()
+		{
+			var c_id = 1;
+
+			GenFu.GenFu.Configure<Chapter>()
+			    .Fill(p => p.Id, () => c_id++)
+			    .Fill(p => p.Name, () => $"chapter_{c_id}");
+
+			return GenFu.GenFu.ListOf<Chapter>(2);
+		}
+
+		private IEnumerable<Book> CreateBooks()
+		{
+			var b_id = 1;
+
+			GenFu.GenFu.Configure<Book>()
+			    .Fill(p => p.Id, () => b_id++)
+			    .Fill(p => p.Name, () => $"hello_{b_id}");
+
+			return GenFu.GenFu.ListOf<Book>(1);
 		}
 		#endregion
 

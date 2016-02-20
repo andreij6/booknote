@@ -17,6 +17,9 @@ namespace BookNote.Repository.Repos.SectionRepo
 			db = context;
 		}
 
+		public static string BOOK_NOT_FOUND = "Book not found for specified Id";
+		public static string CHAPTER_NOT_FOUND = "Chapter not found for specified Id";
+
 		public void Add(Section entity)
 		{
 			CheckValidity(entity);
@@ -47,6 +50,8 @@ namespace BookNote.Repository.Repos.SectionRepo
 						.Include(b => b.Chapters)
 						.FirstOrDefault(b => b.Id == bookId);
 
+			if (book == null) throw CreateException(BOOK_NOT_FOUND);
+
 			var result = new List<Section>();
 
 			foreach(var chapter in book.Chapters) {
@@ -60,11 +65,9 @@ namespace BookNote.Repository.Repos.SectionRepo
 		{
 			var chapter = db.Chapters.Include(c => c.Sections).FirstOrDefault(c => c.Id == chapterId);
 
-			if(chapter == null) {
-				return Enumerable.Empty<Section>();
-			}
+			if (chapter == null) throw CreateException(CHAPTER_NOT_FOUND);
 
-			return chapter.Sections;
+			return chapter.Sections.ToList();
 		}
 
 		public void Update(int id, Section entity)
