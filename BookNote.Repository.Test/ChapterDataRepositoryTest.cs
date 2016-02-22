@@ -19,20 +19,6 @@ namespace BookNote.Repository.Test
 			SUT = null;
 		}
 
-		protected override void CreateTestData(BookNoteContext context)
-		{
-			var id = 1;
-
-			GenFu.GenFu.Configure<Chapter>()
-			    .Fill(p => p.Id, () => id++)
-			    .Fill(p => p.Name, () => $"chapter_{id}");
-
-			var chapters = GenFu.GenFu.ListOf<Chapter>(20);
-
-			context.Chapters.AddRange(chapters);
-			context.SaveChanges();
-		}
-
 		protected override void ArrangeSUT()
 		{
 			var dbContext = arrangeDB();
@@ -45,13 +31,23 @@ namespace BookNote.Repository.Test
 		[Fact]
 		public void GetChapters_ByBookId_ShouldSucceedWithValidBookId()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			var target = SUT.GetChaptersByBookId(1);
+
+			target.Should().BeOfType<List<Chapter>>();
+			target.Should().HaveCount(x => x == 20);
 		}
 
 		[Fact]
 		public void GetChapters_ByBookId_ShouldBeNullForInvalidBookId()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			Action action = () => SUT.GetChaptersByBookId(999);
+
+			action.ShouldThrow<Exception>().WithMessage(SUT.BOOK_NOT_FOUND);
+
 		}
 		#endregion
 

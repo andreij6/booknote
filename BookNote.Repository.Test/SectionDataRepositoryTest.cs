@@ -22,7 +22,7 @@ namespace BookNote.Repository.Test
 
 			var target = SUT.GetSectionsByBookId(1);
 
-			target.Should().BeOfType<IEnumerable<Section>>();
+			target.Should().BeOfType<List<Section>>();
 			target.Should().HaveCount(x => x == 20);
 		}
 
@@ -31,9 +31,9 @@ namespace BookNote.Repository.Test
 		{
 			ArrangeSUT();
 
-			Action action = () => SUT.GetSectionsByBookId(5);
+			Action action = () => SUT.GetSectionsByBookId(500);
 
-			action.ShouldThrow<Exception>().WithMessage(SectionDataRepository.BOOK_NOT_FOUND);
+			action.ShouldThrow<Exception>().WithMessage(SUT.BOOK_NOT_FOUND);
 		}
 
 		[Fact]
@@ -69,64 +69,6 @@ namespace BookNote.Repository.Test
 			var context = arrangeDB();
 
 			SUT = new SectionDataRepository(context);
-		}
-
-		protected override void CreateTestData(BookNoteContext dbContext)
-		{
-			var books = CreateBooks();
-			var chapters = CreateChapters();
-			var sections = CreateSections();
-
-			//Add Section to Chapters
-			var firstChapter = chapters.ElementAt(0);
-			var secondChapter = chapters.ElementAt(1);
-
-			firstChapter.Sections = sections.Take(10).ToArray();
-			secondChapter.Sections = sections.Skip(10).Take(10).ToArray();
-
-			//Add Chapters to book
-			var onlyBook = books.ElementAt(0);
-
-			onlyBook.Chapters = chapters.ToArray();
-
-			dbContext.Books.AddRange(books);
-			dbContext.Chapters.AddRange(chapters);
-			dbContext.Sections.AddRange(sections);
-
-			dbContext.SaveChanges();
-		}
-
-		private IEnumerable<Section> CreateSections()
-		{
-			var id = 1;
-
-			GenFu.GenFu.Configure<Section>()
-			    .Fill(p => p.Id, () => id++)
-			    .Fill(p => p.Name, () => $"section_{id}");
-
-			return GenFu.GenFu.ListOf<Section>(20);
-		}
-
-		private IEnumerable<Chapter> CreateChapters()
-		{
-			var c_id = 1;
-
-			GenFu.GenFu.Configure<Chapter>()
-			    .Fill(p => p.Id, () => c_id++)
-			    .Fill(p => p.Name, () => $"chapter_{c_id}");
-
-			return GenFu.GenFu.ListOf<Chapter>(2);
-		}
-
-		private IEnumerable<Book> CreateBooks()
-		{
-			var b_id = 1;
-
-			GenFu.GenFu.Configure<Book>()
-			    .Fill(p => p.Id, () => b_id++)
-			    .Fill(p => p.Name, () => $"hello_{b_id}");
-
-			return GenFu.GenFu.ListOf<Book>(1);
 		}
 		#endregion
 
@@ -259,7 +201,7 @@ namespace BookNote.Repository.Test
 			//Act
 			SUT.Delete(9);
 
-			var target = SUT.GetById(99);
+			var target = SUT.GetById(9);
 
 			//Assert
 			target.Should().BeNull();

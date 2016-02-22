@@ -17,8 +17,16 @@ namespace BookNote.Repository.Repos.SectionRepo
 			db = context;
 		}
 
-		public static string BOOK_NOT_FOUND = "Book not found for specified Id";
+		private static string BOOK_NOT_FOUND = "Book not found for specified Id";
 		public static string CHAPTER_NOT_FOUND = "Chapter not found for specified Id";
+
+		string ISectionDataRepository.BOOK_NOT_FOUND
+		{
+			get
+			{
+				return BOOK_NOT_FOUND;
+			}
+		}
 
 		public void Add(Section entity)
 		{
@@ -30,7 +38,9 @@ namespace BookNote.Repository.Repos.SectionRepo
 		public void Delete(int id)
 		{
 			var entity = GetById(id);
+
 			db.Sections.Remove(entity);
+
 			Commit();
 		}
 
@@ -55,7 +65,9 @@ namespace BookNote.Repository.Repos.SectionRepo
 			var result = new List<Section>();
 
 			foreach(var chapter in book.Chapters) {
-				result.AddRange(chapter.Sections);
+				if (chapter.Sections != null) {
+					result.AddRange(chapter.Sections);
+				}
 			}
 
 			return result;

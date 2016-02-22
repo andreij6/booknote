@@ -18,6 +18,14 @@ namespace BookNote.Repository.Repos.ChapterRepo
 			db = context;
 		}
 
+		public string BOOK_NOT_FOUND
+		{
+			get
+			{
+				return "Book not found for specified Id";
+			}
+		}
+
 		public void Add(Chapter entity)
 		{
 			CheckValidity(entity);
@@ -47,9 +55,12 @@ namespace BookNote.Repository.Repos.ChapterRepo
 
 		public IEnumerable<Chapter> GetChaptersByBookId(int bookid)
 		{
-			return db.Books.Include(b => b.Chapters)
-				      .FirstOrDefault(b => b.Id == bookid)
-					 .Chapters;
+			var book = db.Books.Include(b => b.Chapters)
+					 .FirstOrDefault(b => b.Id == bookid);
+
+			if (book == null) throw CreateException(BOOK_NOT_FOUND);
+
+			return book.Chapters;
 		}
 
 		public void Update(int id, Chapter entity)

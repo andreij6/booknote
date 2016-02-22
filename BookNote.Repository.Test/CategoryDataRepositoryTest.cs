@@ -168,20 +168,7 @@ namespace BookNote.Repository.Test
 
 			SUT = new CategoryDataRepository(context);
 		}
-
-		protected override void CreateTestData(BookNoteContext dbContext)
-		{
-			var id = 1;
-
-			GenFu.GenFu.Configure<Category>()
-			    .Fill(p => p.Id, () => id++)
-			    .Fill(p => p.Name, () => $"category_{id}");
-
-			var cats = GenFu.GenFu.ListOf<Category>(20);
-
-			dbContext.Categories.AddRange(cats);
-			dbContext.SaveChanges();
-		}
+	
 		#endregion
 
 

@@ -17,20 +17,6 @@ namespace BookNote.Repository.Test
 	public class BookRepositoryTest : DataRepositoryTest<IBookDataRepository>, IFullDataRepositoryCapable
 	{
 
-		protected override void CreateTestData(BookNoteContext dbContext)
-		{
-			var id = 1;
-
-			GenFu.GenFu.Configure<Book>()
-			    .Fill(p => p.Id, () => id++)
-			    .Fill(p => p.Name, () => $"hello_{id}");
-
-			var books = GenFu.GenFu.ListOf<Book>(20);
-
-			dbContext.Books.AddRange(books);
-			dbContext.SaveChanges();
-		}
-
 		public override void Dispose()
 		{
 			SUT = null;

@@ -8,6 +8,8 @@ namespace BookNote.Repository.Repos.ChapterRepo
 {
     public interface IChapterDataRepository : IFullDataRepository<Chapter>
     {
+		string BOOK_NOT_FOUND { get; }
+
 		IEnumerable<Chapter> GetChaptersByBookId(int bookid);
     }
 }
