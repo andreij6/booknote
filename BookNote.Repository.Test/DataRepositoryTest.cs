@@ -46,6 +46,7 @@ namespace BookNote.Repository.Test
 			var books = CreateBooks();
 			var chapters = CreateChapters();
 			var sections = CreateSections();
+			var categories = CreateCategories();
 
 			//Add Section to Chapters
 			var firstChapter = chapters.ElementAt(0);
@@ -55,15 +56,27 @@ namespace BookNote.Repository.Test
 			secondChapter.Sections = sections.Skip(10).Take(10).ToList();
 
 			//Add Chapters to book
-			var onlyBook = books.ElementAt(0);
+			var firstBook = books.ElementAt(0);
 
-			onlyBook.Chapters = chapters.ToList();
+			firstBook.Categories = categories.ToList();
+			firstBook.Chapters = chapters.ToList();
 
 			dbContext.Books.AddRange(books);
 			dbContext.Chapters.AddRange(chapters);
 			dbContext.Sections.AddRange(sections);
 
 			dbContext.SaveChanges();
+		}
+
+		private IEnumerable<Category> CreateCategories()
+		{
+			var c_id = 1;
+
+			GenFu.GenFu.Configure<Category>()
+			    .Fill(p => p.Id, () => c_id++)
+			    .Fill(p => p.Name, () => $"category_{c_id}");
+
+			return GenFu.GenFu.ListOf<Category>(20);
 		}
 
 		private IEnumerable<Section> CreateSections()

@@ -16,13 +16,22 @@ namespace BookNote.Repository.Test
 		[Fact]
 		public void GetCategories_ByBookId_ShouldReturnAllCategoriesForBook()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			var target = SUT.GetByBookId(1);
+
+			target.Should().BeOfType<List<Category>>();
+			target.Should().HaveCount(x => x == 20);
 		}
 
 		[Fact]
 		public void GetCategories_ByBookId_ShouldReturnNullIfBookIdNotFound()
 		{
-			throw new NotImplementedException();
+			ArrangeSUT();
+
+			Action action = () => SUT.GetByBookId(500);
+
+			action.ShouldThrow<Exception>().WithMessage(SUT.BOOK_NOT_FOUND);
 		}
 		#endregion
 

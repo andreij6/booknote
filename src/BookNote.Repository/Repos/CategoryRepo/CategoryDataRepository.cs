@@ -15,6 +15,14 @@ namespace BookNote.Repository.Repos.CategoryRepo
 			db = context;
 		}
 
+		public string BOOK_NOT_FOUND
+		{
+			get
+			{
+				return "Book not Found for specified Id";
+			}
+		}
+
 		public void Add(Category entity)
 		{
 			CheckValidity(entity);
@@ -39,7 +47,11 @@ namespace BookNote.Repository.Repos.CategoryRepo
 
 		public IEnumerable<Category> GetByBookId(int bookId)
 		{
-			return db.Books.FirstOrDefault(b => b.Id == bookId).Categories;
+			var book = db.Books.FirstOrDefault(b => b.Id == bookId);
+
+			if (book == null) throw CreateException(BOOK_NOT_FOUND);
+
+			return book.Categories;
 		}
 
 		public Category GetById(int id)
