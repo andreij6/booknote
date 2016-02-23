@@ -18,6 +18,7 @@ using BookNote.Repository.Repos.ChapterRepo;
 using BookNote.Repository.Repos.SectionRepo;
 using BookNote.Repository.Repos.BookRepo;
 using BookNote.Repository.Repos.CategoryRepo;
+using BookNote.Services.ApplicationServices;
 
 namespace BookNote
 {
@@ -64,6 +65,7 @@ namespace BookNote
 			// Add application services.
 			services.AddTransient<IEmailSender, AuthMessageSender>();
 			services.AddTransient<ISmsSender, AuthMessageSender>();
+			services.AddScoped<IBookShelfService, BookShelfService>();
 
 			RegisterRepositories(services);
 		}
