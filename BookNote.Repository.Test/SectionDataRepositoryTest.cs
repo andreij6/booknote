@@ -62,6 +62,7 @@ namespace BookNote.Repository.Test
 		public override void Dispose()
 		{
 			SUT = null;
+			base.Dispose();
 		}
 
 		protected override void ArrangeSUT()

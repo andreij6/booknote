@@ -14,8 +14,9 @@ namespace BookNote.Repository.Test
 {
     public abstract class DataRepositoryTest<T> : IDisposable
     {
-		protected readonly IServiceProvider serviceProvider;
+		protected IServiceProvider serviceProvider;
 		protected T SUT;
+		private BookNoteContext DBContext;
 
 		public DataRepositoryTest()
 		{
@@ -28,17 +29,64 @@ namespace BookNote.Repository.Test
 			serviceProvider = services.BuildServiceProvider();
 		}
 
-		public abstract void Dispose();
+		public virtual void Dispose() {
+			DeleteSections();
+			DeleteCategories();
+			DeleteChapters();
+			DeleteBooks();
+
+			DBContext.Database.EnsureDeleted();
+			DBContext.Dispose();
+			DBContext = null;
+
+			serviceProvider = null;
+		}
+
+		private void DeleteBooks()
+		{
+			var books = DBContext.Books.ToList();
+
+			DBContext.Books.RemoveRange(books);
+
+			DBContext.SaveChanges();
+		}
+
+		private void DeleteChapters()
+		{
+			var chapters = DBContext.Chapters.ToList();
+
+			DBContext.Chapters.RemoveRange(chapters);
+
+			DBContext.SaveChanges();
+		}
+
+		private void DeleteCategories()
+		{
+			var categories = DBContext.Categories.ToList();
+
+			DBContext.Categories.RemoveRange(categories);
+
+			DBContext.SaveChanges();
+		}
+
+		private void DeleteSections()
+		{
+			var sections = DBContext.Sections.ToList();
+
+			DBContext.Sections.RemoveRange(sections);
+
+			DBContext.SaveChanges();
+		}
 
 		protected abstract void ArrangeSUT();
 
 		protected BookNoteContext arrangeDB()
 		{
-			var dbContext = serviceProvider.GetRequiredService<BookNoteContext>();
+			DBContext = serviceProvider.GetRequiredService<BookNoteContext>();
 
-			CreateTestData(dbContext);
+			CreateTestData(DBContext);
 
-			return dbContext;
+			return DBContext;
 		}
 
 		protected void CreateTestData(BookNoteContext dbContext)

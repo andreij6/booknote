@@ -6,7 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BookNote.Domain.Models
 {
-    public class ApplicationUser : IdentityUser
+	public class ApplicationUser : IdentityUser
 	{
-    }
+	}
 }

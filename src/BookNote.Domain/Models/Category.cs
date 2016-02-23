@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookNote.Domain.Utils;
 
 namespace BookNote.Domain.Models
 {
@@ -12,11 +13,7 @@ namespace BookNote.Domain.Models
 
 		public bool isValid()
 		{
-			if (Name == "") return false;
-			if (Name == String.Empty) return false;
-			if (Name == null) return false;
-
-			return true;
+			return ValidationUtil.validateName(Name);
 		}
 
 		public string ValidationMessage()

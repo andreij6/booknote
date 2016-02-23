@@ -17,6 +17,14 @@ namespace BookNote.Repository.Repos.BookRepo
 			db = context;
 		}
 
+		public string BOOK_NOT_FOUND
+		{
+			get
+			{
+				return "Book not found for specified Id";
+			}
+		}
+
 		public void Add(Book entity)
 		{
 			CheckValidity(entity);
@@ -47,6 +55,8 @@ namespace BookNote.Repository.Repos.BookRepo
 			CheckValidity(entity);
 
 			var found = GetById(id);
+
+			if (found == null) throw CreateException(BOOK_NOT_FOUND);
 
 			found.Name = entity.Name;
 			found.Note = entity.Note;
